@@ -3,7 +3,7 @@ export interface LiveClass {
 	course: Course;
 	instructor: string;
 	location: string;
-	startTime: Date;
+	startTime: string; // Format: 13:30
 	durationMinutes: number;
 	capacity: number;
 	sneakScore: "High" | "Medium" | "Low";

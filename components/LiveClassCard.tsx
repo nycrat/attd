@@ -17,8 +17,12 @@ export const LiveClassCard: React.FC<LiveClassCardProps> = ({ item }) => {
   const endTime = new Date(item.startTime.getTime() + item.durationMinutes * 60000);
   const endTimeString = endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-  // map link placeholder for now
-  const mapLink = `https://maps.google.com/}`;
+  // ubc learning spaces link
+  const formattedLocation = item.location
+  .toLowerCase()
+  .replace(/\s+/g, '-');
+
+const mapLink = `https://learningspaces.ubc.ca/classrooms/${formattedLocation}/`;
 
   return (
     <a 

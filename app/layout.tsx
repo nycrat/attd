@@ -8,8 +8,8 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "OpenAudit | Real-time Discovery",
-  description: "A high-performance academic dashboard for discovering live classes.",
+  title: "Audit | Lecture Discovery",
+  description: "An academic dashboard for discovering live lectures.",
 };
 
 export default function RootLayout({

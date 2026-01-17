@@ -14,7 +14,7 @@ export const INITIAL_LIVE_CLASSES: LiveClass[] = [
       level: 'Intermediate'
     },
     instructor: 'Dr. Reid',
-    location: 'DMP 110',
+    location: 'SWNG 105',
     startTime: new Date(now.getTime() - 30 * 60000), // Started 30 mins ago
     durationMinutes: 90,
     capacity: 200,
@@ -48,7 +48,7 @@ export const INITIAL_LIVE_CLASSES: LiveClass[] = [
       level: 'Advanced'
     },
     instructor: 'Dr. Singh',
-    location: 'HEBB 10',
+    location: 'HEBB 100',
     startTime: new Date(now.getTime() + 45 * 60000), // Starts in 45 mins
     durationMinutes: 120,
     capacity: 60,

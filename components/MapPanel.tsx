@@ -12,7 +12,7 @@ let scriptLoading = false;
 let scriptLoaded = false;
 
 const MAP_STYLE = [
-  { elementType: "geometry", stylers: [{ color: "#121212" }] },
+  { elementType: "geometry", stylers: [{ color: "#181818" }] },
   { elementType: "labels.text.stroke", stylers: [{ color: "#121212" }] },
   { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
   {
@@ -33,12 +33,12 @@ const MAP_STYLE = [
   {
     featureType: "road",
     elementType: "geometry",
-    stylers: [{ color: "#212121" }],
+    stylers: [{ color: "#23272b" }],
   },
   {
     featureType: "road",
     elementType: "geometry.stroke",
-    stylers: [{ color: "#212121" }],
+    stylers: [{ color: "#23272b" }],
   },
   {
     featureType: "road",
@@ -48,7 +48,7 @@ const MAP_STYLE = [
   {
     featureType: "water",
     elementType: "geometry",
-    stylers: [{ color: "#0a192f" }],
+    stylers: [{ color: "#285eaf" }],
   },
 ];
 

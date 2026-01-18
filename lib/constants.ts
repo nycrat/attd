@@ -1,77 +1,77 @@
-import { Course, LiveClass } from './types';
+import { Course, LiveClass } from "./types";
 
 // new fake data for live classes
 const now = new Date();
 
 export const INITIAL_LIVE_CLASSES: LiveClass[] = [
   {
-    id: '1',
+    id: "1",
     course: {
-      code: 'CPSC 310',
-      name: 'Software Engineering',
-      description: 'Processes and tools for large-scale software development.',
-      imageUrl: 'https://picsum.photos/seed/code/400/300',
-      level: 'Intermediate'
+      code: "CPSC 310",
+      name: "Software Engineering",
+      description: "Processes and tools for large-scale software development.",
+      imageUrl: "https://picsum.photos/seed/code/400/300",
+      level: "Intermediate",
     },
-    instructor: 'Dr. Reid',
-    location: 'SWNG 105',
+    instructor: "Dr. Reid",
+    location: "SWNG 105",
     startTime: "12:00", // Started 30 mins ago
     durationMinutes: 90,
     capacity: 200,
-    sneakScore: 'High',
+    sneakScore: "High",
     type: "Lecture",
   },
   {
-    id: '2',
+    id: "2",
     course: {
-      code: 'ECON 101',
-      name: 'Microeconomics',
-      description: 'The study of individual decision-making in the economy.',
-      imageUrl: 'https://picsum.photos/seed/econ/400/300',
-      level: 'Beginner'
+      code: "ECON 101",
+      name: "Microeconomics",
+      description: "The study of individual decision-making in the economy.",
+      imageUrl: "https://picsum.photos/seed/econ/400/300",
+      level: "Beginner",
     },
-    instructor: 'Prof. Gateman',
-    location: 'BUCH A101',
+    instructor: "Prof. Gateman",
+    location: "BUCH A101",
     startTime: "17:30", // Started 10 mins ago
     durationMinutes: 50,
     capacity: 400,
-    sneakScore: 'Low',
+    sneakScore: "Low",
     type: "Lecture",
   },
   {
-    id: '3',
+    id: "3",
     course: {
-      code: 'PHYS 401',
-      name: 'Quantum Mechanics II',
-      description: 'Advanced quantum phenomena and mathematical formalisms.',
-      imageUrl: 'https://picsum.photos/seed/physics/400/300',
-      level: 'Advanced'
+      code: "PHYS 401",
+      name: "Quantum Mechanics II",
+      description: "Advanced quantum phenomena and mathematical formalisms.",
+      imageUrl: "https://picsum.photos/seed/physics/400/300",
+      level: "Advanced",
     },
-    instructor: 'Dr. Singh',
-    location: 'HEBB 100',
+    instructor: "Dr. Singh",
+    location: "HEBB 100",
     startTime: "18:00", // Starts in 45 mins
     durationMinutes: 120,
     capacity: 60,
-    sneakScore: 'Medium',
+    sneakScore: "Medium",
     type: "Lecture",
   },
   {
-    id: '4',
+    id: "4",
     course: {
-      code: 'MATH 200',
-      name: 'Calculus III',
-      description: 'Multivariable calculus and vector analysis.',
-      imageUrl: 'https://picsum.photos/seed/math/400/300',
-      level: 'Intermediate'
+      code: "MATH 200",
+      name: "Calculus III",
+      description: "Multivariable calculus and vector analysis.",
+      imageUrl: "https://picsum.photos/seed/math/400/300",
+      level: "Intermediate",
     },
-    instructor: 'Prof. Euler',
-    location: 'LSK 201',
+    instructor: "Prof. Euler",
+    location: "LSK 201",
     startTime: "16:30", // Starts in 2 hours
     durationMinutes: 60,
     capacity: 180,
-    sneakScore: 'High',
+    sneakScore: "High",
     type: "Lecture",
-  }
+  },
 ];
 
 export const INITIAL_COURSES: Course[] = []; // Main panel uses LiveClass course data or fresh search

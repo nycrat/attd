@@ -18,5 +18,5 @@ export async function getLiveClasses() {
     }),
   )) as LiveClass[];
 
-	return res;
+  return res;
 }

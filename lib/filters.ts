@@ -17,6 +17,7 @@ export interface SearchFilters {
 
 export async function buildAndExecuteQuery(
   filters: SearchFilters,
+  now: Date,
 ): Promise<LiveClass[]> {
   const sql = neon(`${process.env.DATABASE_URL}`);
 
@@ -28,10 +29,9 @@ export async function buildAndExecuteQuery(
   `;
 
   // TODO make this a parameter
-  const currentTime = new Date();
   const bufferMins = filters.starts_within_mins ?? 60;
-  const futureLimit = new Date(currentTime.getTime() + bufferMins * 60000);
-  const currentTimeStr = `${currentTime.getHours().toString().padStart(2, "0")}:${currentTime.getMinutes().toString().padStart(2, "0")}`;
+  const futureLimit = new Date(now.getTime() + bufferMins * 60000);
+  const currentTimeStr = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
   const futureTimeStr = `${futureLimit.getHours().toString().padStart(2, "0")}:${futureLimit.getMinutes().toString().padStart(2, "0")}`;
 
   try {

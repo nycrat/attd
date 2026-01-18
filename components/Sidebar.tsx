@@ -1,5 +1,5 @@
 import React from 'react';
-import { LiveClass } from '../types';
+import { LiveClass } from '../lib/types';
 import { LiveClassCard } from './LiveClassCard';
 
 interface SidebarProps {

@@ -4,8 +4,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Sidebar } from '../components/Sidebar';
 import { SearchHeader } from '../components/SearchHeader';
 import { Header } from '../components/Header';
-import { INITIAL_LIVE_CLASSES } from '../constants';
-import { LiveClass } from '../types';
+import { INITIAL_LIVE_CLASSES } from '../lib/constants';
+import { LiveClass } from '../lib/types';
 
 export default function Home() {
   const [liveClasses, setLiveClasses] = useState<LiveClass[]>(INITIAL_LIVE_CLASSES);

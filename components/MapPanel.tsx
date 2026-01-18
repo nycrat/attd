@@ -1,8 +1,7 @@
+"use client";
 
-'use client';
-
-import React, { useEffect, useRef, useState } from 'react';
-import { LiveClass } from '../types';
+import React, { useEffect, useRef, useState } from "react";
+import { LiveClass } from "../types";
 
 interface MapPanelProps {
   selectedClass: LiveClass | null;
@@ -13,24 +12,52 @@ let scriptLoading = false;
 let scriptLoaded = false;
 
 // Mock building coordinates for UBC
-const BUILDING_COORDS: Record<string, { lat: number, lng: number }> = {
-  'DMP 110': { lat: 49.2612, lng: -123.2488 },
-  'BUCH A101': { lat: 49.2681, lng: -123.2547 },
-  'HEBB 10': { lat: 49.2662, lng: -123.2523 },
-  'LSK 201': { lat: 49.2651, lng: -123.2504 },
+const BUILDING_COORDS: Record<string, { lat: number; lng: number }> = {
+  "DMP 110": { lat: 49.2612, lng: -123.2488 },
+  "BUCH A101": { lat: 49.2681, lng: -123.2547 },
+  "HEBB 10": { lat: 49.2662, lng: -123.2523 },
+  "LSK 201": { lat: 49.2651, lng: -123.2504 },
 };
 
 const MAP_STYLE = [
-  { "elementType": "geometry", "stylers": [{ "color": "#121212" }] },
-  { "elementType": "labels.text.stroke", "stylers": [{ "color": "#121212" }] },
-  { "elementType": "labels.text.fill", "stylers": [{ "color": "#746855" }] },
-  { "featureType": "administrative.locality", "elementType": "labels.text.fill", "stylers": [{ "color": "#d59563" }] },
-  { "featureType": "poi", "elementType": "labels.text.fill", "stylers": [{ "color": "#00a1ff" }, { "visibility": "simplified" }] },
-  { "featureType": "poi.park", "elementType": "geometry", "stylers": [{ "color": "#1b1b1b" }] },
-  { "featureType": "road", "elementType": "geometry", "stylers": [{ "color": "#212121" }] },
-  { "featureType": "road", "elementType": "geometry.stroke", "stylers": [{ "color": "#212121" }] },
-  { "featureType": "road", "elementType": "labels.text.fill", "stylers": [{ "color": "#9ca5b3" }] },
-  { "featureType": "water", "elementType": "geometry", "stylers": [{ "color": "#0a192f" }] }
+  { elementType: "geometry", stylers: [{ color: "#121212" }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#121212" }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
+  {
+    featureType: "administrative.locality",
+    elementType: "labels.text.fill",
+    stylers: [{ color: "#d59563" }],
+  },
+  {
+    featureType: "poi",
+    elementType: "labels.text.fill",
+    stylers: [{ color: "#00a1ff" }, { visibility: "simplified" }],
+  },
+  {
+    featureType: "poi.park",
+    elementType: "geometry",
+    stylers: [{ color: "#1b1b1b" }],
+  },
+  {
+    featureType: "road",
+    elementType: "geometry",
+    stylers: [{ color: "#212121" }],
+  },
+  {
+    featureType: "road",
+    elementType: "geometry.stroke",
+    stylers: [{ color: "#212121" }],
+  },
+  {
+    featureType: "road",
+    elementType: "labels.text.fill",
+    stylers: [{ color: "#9ca5b3" }],
+  },
+  {
+    featureType: "water",
+    elementType: "geometry",
+    stylers: [{ color: "#0a192f" }],
+  },
 ];
 
 export const MapPanel: React.FC<MapPanelProps> = ({ selectedClass }) => {
@@ -38,21 +65,22 @@ export const MapPanel: React.FC<MapPanelProps> = ({ selectedClass }) => {
   const googleMap = useRef<any>(null);
   const marker = useRef<any>(null);
   const [isMounted, setIsMounted] = useState(false);
-  
-  const getCoordsForRoom = async (room: string): Promise<{ lat: number; lng: number }> => {
 
+  const getCoordsForRoom = async (
+    room: string,
+  ): Promise<{ lat: number; lng: number }> => {
     return new Promise((resolve) => {
       const geocoder = new window.google.maps.Geocoder();
       // construct address based on building code
-      const buildingCode = room.split(' ')[0].toUpperCase();
+      const buildingCode = room.split(" ")[0].toUpperCase();
       const address = `UBC ${buildingCode}, Vancouver, BC, Canada`;
-      
+
       geocoder.geocode({ address }, (results: any, status: string) => {
-        if (status === 'OK' && results && results[0]) {
+        if (status === "OK" && results && results[0]) {
           const location = results[0].geometry.location;
           resolve({
             lat: location.lat(),
-            lng: location.lng()
+            lng: location.lng(),
           });
         } else {
           // fallback to UBC center if geocoding fails
@@ -71,8 +99,9 @@ export const MapPanel: React.FC<MapPanelProps> = ({ selectedClass }) => {
     if (!isMounted) return;
 
     const initMap = () => {
-      if (!mapRef.current || typeof window === 'undefined' || !window.google) return;
-      
+      if (!mapRef.current || typeof window === "undefined" || !window.google)
+        return;
+
       const ubcCenter = { lat: 49.2676, lng: -123.2473 };
       googleMap.current = new window.google.maps.Map(mapRef.current, {
         center: ubcCenter,
@@ -84,14 +113,16 @@ export const MapPanel: React.FC<MapPanelProps> = ({ selectedClass }) => {
     };
 
     // Check if script already exists in DOM
-    const existingScript = document.querySelector('script[src*="maps.googleapis.com"]');
-    
+    const existingScript = document.querySelector(
+      'script[src*="maps.googleapis.com"]',
+    );
+
     if (existingScript) {
       // Script already exists, wait for it to load or use it if already loaded
       if (window.google && window.google.maps) {
         initMap();
       } else {
-        existingScript.addEventListener('load', initMap);
+        existingScript.addEventListener("load", initMap);
       }
       return;
     }
@@ -105,7 +136,7 @@ export const MapPanel: React.FC<MapPanelProps> = ({ selectedClass }) => {
     }
 
     // C\heck if already loaded
-    if (typeof window !== 'undefined' && window.google && window.google.maps) {
+    if (typeof window !== "undefined" && window.google && window.google.maps) {
       scriptLoaded = true;
       initMap();
       return;
@@ -113,14 +144,16 @@ export const MapPanel: React.FC<MapPanelProps> = ({ selectedClass }) => {
 
     // Load script
     scriptLoading = true;
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
     if (!apiKey) {
-      console.error('Google Maps API key is not configured. Please set NEXT_PUBLIC_GOOGLE_MAPS_API_KEY in your .env.local file.');
+      console.error(
+        "Google Maps API key is not configured. Please set NEXT_PUBLIC_GOOGLE_MAPS_API_KEY in your .env.local file.",
+      );
       scriptLoading = false;
       return;
     }
-    
+
     script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}`;
     script.async = true;
     script.defer = true;
@@ -131,7 +164,7 @@ export const MapPanel: React.FC<MapPanelProps> = ({ selectedClass }) => {
     };
     script.onerror = () => {
       scriptLoading = false;
-      console.error('Failed to load Google Maps API');
+      console.error("Failed to load Google Maps API");
     };
     document.head.appendChild(script);
   }, [isMounted]);
@@ -140,7 +173,7 @@ export const MapPanel: React.FC<MapPanelProps> = ({ selectedClass }) => {
     if (googleMap.current && selectedClass && window.google) {
       getCoordsForRoom(selectedClass.location).then((coords) => {
         if (!googleMap.current) return;
-        
+
         googleMap.current.panTo(coords);
         googleMap.current.setZoom(17);
 
@@ -158,7 +191,7 @@ export const MapPanel: React.FC<MapPanelProps> = ({ selectedClass }) => {
             fillOpacity: 1,
             strokeWeight: 2,
             strokeColor: "#ffffff",
-          }
+          },
         });
       });
     }

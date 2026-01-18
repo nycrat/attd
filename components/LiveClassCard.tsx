@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { LiveClass } from '../lib/types';
-import { stringToTime } from '@/lib/helpers';
+import React from "react";
+import { LiveClass } from "../lib/types";
+import { stringToTime } from "@/lib/helpers";
 
 interface LiveClassCardProps {
   item: LiveClass;
@@ -10,7 +10,11 @@ interface LiveClassCardProps {
   isSelected?: boolean;
 }
 
-export const LiveClassCard: React.FC<LiveClassCardProps> = ({ item, onSelect, isSelected }) => {
+export const LiveClassCard: React.FC<LiveClassCardProps> = ({
+  item,
+  onSelect,
+  isSelected,
+}) => {
   const sneakScoreColors = {
     High: "bg-green-500",
     Medium: "bg-yellow-500",
@@ -36,9 +40,9 @@ export const LiveClassCard: React.FC<LiveClassCardProps> = ({ item, onSelect, is
   };
 
   return (
-    <button 
+    <button
       onClick={handleClick}
-      className={`w-full text-left block bg-panel-dark p-4 rounded-xl border transition-all group ${isSelected ? 'border-primary shadow-lg shadow-primary/10 ring-1 ring-primary/20' : 'border-white/5 hover:border-primary/50'} ${progress > 90 ? 'opacity-60' : ''}`}
+      className={`w-full text-left block bg-panel-dark p-4 rounded-xl border transition-all group ${isSelected ? "border-primary shadow-lg shadow-primary/10 ring-1 ring-primary/20" : "border-white/5 hover:border-primary/50"} ${progress > 90 ? "opacity-60" : ""}`}
     >
       <div className="flex justify-between items-start">
         <div className="flex flex-col max-w-[70%]">
@@ -73,19 +77,21 @@ export const LiveClassCard: React.FC<LiveClassCardProps> = ({ item, onSelect, is
       </div>
 
       <div className="mt-3 flex items-center justify-between">
-         <div className="flex flex-col">
-            <span className="text-[10px] text-gray-500 font-medium">{timeString} - {endTimeString}</span>
-            <div className="h-1 w-24 bg-white/5 rounded-full mt-1 overflow-hidden">
-              <div 
-                className="h-full bg-primary transition-all duration-1000" 
-                style={{ width: `${progress}%` }}
-              ></div>
-            </div>
-         </div>
-         <div className="flex items-center gap-1 text-[9px] font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity uppercase">
-            <span>Audit Details</span>
-            <span className="material-symbols-outlined text-xs">info</span>
-         </div>
+        <div className="flex flex-col">
+          <span className="text-[10px] text-gray-500 font-medium">
+            {timeString} - {endTimeString}
+          </span>
+          <div className="h-1 w-24 bg-white/5 rounded-full mt-1 overflow-hidden">
+            <div
+              className="h-full bg-primary transition-all duration-1000"
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+        </div>
+        <div className="flex items-center gap-1 text-[9px] font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity uppercase">
+          <span>Audit Details</span>
+          <span className="material-symbols-outlined text-xs">info</span>
+        </div>
       </div>
     </button>
   );

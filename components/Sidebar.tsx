@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { LiveClass } from '../lib/types';
-import { LiveClassCard } from './LiveClassCard';
-import { stringToTime } from '@/lib/helpers';
+import React from "react";
+import { LiveClass } from "../lib/types";
+import { LiveClassCard } from "./LiveClassCard";
+import { stringToTime } from "@/lib/helpers";
 
 interface SidebarProps {
   liveClasses: LiveClass[];
@@ -11,7 +11,11 @@ interface SidebarProps {
   onSelectClass: (item: LiveClass) => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ liveClasses, selectedClassId, onSelectClass }) => {
+export const Sidebar: React.FC<SidebarProps> = ({
+  liveClasses,
+  selectedClassId,
+  onSelectClass,
+}) => {
   const now = new Date();
 
   const liveNow = liveClasses.filter((cls) => {
@@ -47,9 +51,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ liveClasses, selectedClassId, 
             </h2>
             <div className="space-y-3">
               {liveNow.map((item) => (
-                <LiveClassCard 
-                  key={item.id} 
-                  item={item} 
+                <LiveClassCard
+                  key={item.id}
+                  item={item}
                   isSelected={item.id === selectedClassId}
                   onSelect={onSelectClass}
                 />
@@ -68,9 +72,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ liveClasses, selectedClassId, 
             </div>
             <div className="space-y-3">
               {upcoming.map((item) => (
-                <LiveClassCard 
-                  key={item.id} 
-                  item={item} 
+                <LiveClassCard
+                  key={item.id}
+                  item={item}
                   isSelected={item.id === selectedClassId}
                   onSelect={onSelectClass}
                 />

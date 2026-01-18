@@ -7,6 +7,7 @@ export interface LiveClass {
 	durationMinutes: number;
 	capacity: number;
 	sneakScore: "High" | "Medium" | "Low";
+	type: "Lecture" | "Seminar" | "Lab";
 }
 
 export interface Course {

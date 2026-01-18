@@ -9,3 +9,9 @@ export function stringToTime(timeString: string) {
 
   return today;
 }
+
+export function formatTime(datetime: Date) {
+  const pad = (n: number) => String(n).padStart(2, "0");
+
+  return `${pad(datetime.getHours())}:${pad(datetime.getMinutes())}`;
+}

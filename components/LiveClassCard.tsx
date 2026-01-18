@@ -2,8 +2,8 @@
 
 import React from "react";
 import { LiveClass } from "../lib/types";
-import { formatTime, stringToTime } from "@/lib/helpers";
-import { now } from "@/lib/constants";
+import { formatTime, getEnd, stringToTime } from "@/lib/helpers";
+import { useNow } from "./NowProvider";
 
 interface LiveClassCardProps {
   item: LiveClass;
@@ -16,6 +16,12 @@ export const LiveClassCard: React.FC<LiveClassCardProps> = ({
   onSelect,
   isSelected,
 }) => {
+  const { now } = useNow();
+
+  if (!now) {
+    return null;
+  }
+
   const sneakScoreColors = {
     High: "bg-green-500",
     Medium: "bg-yellow-500",
@@ -23,11 +29,13 @@ export const LiveClassCard: React.FC<LiveClassCardProps> = ({
   };
 
   const progress =
-    ((now.getTime() - stringToTime(item.startTime).getTime()) /
-      1000 /
-      60 /
-      item.durationMinutes) *
-    100;
+    now > stringToTime(item.startTime) && now < getEnd(item)
+      ? ((now.getTime() - stringToTime(item.startTime).getTime()) /
+          1000 /
+          60 /
+          item.durationMinutes) *
+        100
+      : 0;
 
   // load / update class info
   if (item.capacity >= 150) {

@@ -3,8 +3,8 @@
 import React from "react";
 import { LiveClass } from "../lib/types";
 import { LiveClassCard } from "./LiveClassCard";
-import { stringToTime } from "@/lib/helpers";
-import { now } from "@/lib/constants";
+import { getEnd, stringToTime } from "@/lib/helpers";
+import { useNow } from "./NowProvider";
 
 interface SidebarProps {
   liveClasses: LiveClass[];
@@ -17,10 +17,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
   selectedClassId,
   onSelectClass,
 }) => {
+  const { now } = useNow();
+
+  if (!now) {
+    return null;
+  }
+
   const liveNow = liveClasses.filter((cls) => {
-    const end = new Date(
-      stringToTime(cls.startTime).getTime() + cls.durationMinutes * 60000,
-    );
+    const end = getEnd(cls);
     return stringToTime(cls.startTime) <= now && end >= now;
   });
 
@@ -29,9 +33,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   );
 
   const past = liveClasses.filter((cls) => {
-    const end = new Date(
-      stringToTime(cls.startTime).getTime() + cls.durationMinutes * 60000,
-    );
+    const end = getEnd(cls);
     return end < now;
   });
 

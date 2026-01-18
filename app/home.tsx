@@ -37,7 +37,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ query }),
+        body: JSON.stringify({ query, now }),
       });
 
       if (!response.ok) {

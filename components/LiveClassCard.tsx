@@ -42,7 +42,6 @@ export const LiveClassCard: React.FC<LiveClassCardProps> = ({
 
   useEffect(() => {
     setProgress(getProgress(now));
-    console.log(getProgress(now));
   }, [now]);
 
   // load / update class info

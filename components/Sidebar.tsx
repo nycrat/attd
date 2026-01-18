@@ -25,7 +25,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   const liveNow = liveClasses.filter((cls) => {
     const end = getEnd(cls);
-    console.log(now, end);
     return now >= getLiveClassDatetime(cls) && now <= end;
   });
 

@@ -40,8 +40,8 @@ export async function buildAndExecuteQuery(
       LIMIT 200
     `;
 
-    console.log(currentTimeStr, futureTimeStr, patterns, now.getDay())
-    console.log(allClasses.length)
+    console.log(currentTimeStr, futureTimeStr, patterns, now.getDay());
+    console.log(allClasses.length);
 
     let rows = allClasses
       .filter((row: any) => {

@@ -2,7 +2,8 @@
 
 import React from "react";
 import { LiveClass } from "../lib/types";
-import { stringToTime } from "@/lib/helpers";
+import { formatTime, stringToTime } from "@/lib/helpers";
+import { now } from "@/lib/constants";
 
 interface LiveClassCardProps {
   item: LiveClass;
@@ -21,8 +22,13 @@ export const LiveClassCard: React.FC<LiveClassCardProps> = ({
     Low: "bg-red-500",
   };
 
-  const progress = item.progress || 0;
-  
+  const progress =
+    ((now.getTime() - stringToTime(item.startTime).getTime()) /
+      1000 /
+      60 /
+      item.durationMinutes) *
+    100;
+
   // load / update class info
   if (item.capacity >= 150) {
     item.sneakScore = "High";
@@ -32,17 +38,11 @@ export const LiveClassCard: React.FC<LiveClassCardProps> = ({
     item.sneakScore = "Low";
   }
 
-  const timeString = stringToTime(item.startTime).toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const timeString = formatTime(stringToTime(item.startTime));
   const endTime = new Date(
     stringToTime(item.startTime).getTime() + item.durationMinutes * 60000,
   );
-  const endTimeString = endTime.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const endTimeString = formatTime(endTime);
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();

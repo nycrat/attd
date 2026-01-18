@@ -12,43 +12,53 @@ let scriptLoading = false;
 let scriptLoaded = false;
 
 const MAP_STYLE = [
-  { elementType: "geometry", stylers: [{ color: "#181818" }] },
-  { elementType: "labels.text.stroke", stylers: [{ color: "#121212" }] },
-  { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
   {
-    featureType: "administrative.locality",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "white" }],
+    featureType: "all",
+    elementType: "geometry",
+    stylers: [{ color: "#181818" }],
   },
+  {
+    featureType: "all",
+    elementType: "geometry.stroke",
+    stylers: [{ color: "#00a1ff" }, { weight: 2 }],
+  },
+  {
+    featureType: "road",
+    stylers: [{ color: "#444444" }],
+  },
+  { elementType: "labels.text.stroke", stylers: [{ visibility: "off" }] },
+  { elementType: "labels.text.fill", stylers: [{ visibility: "off" }] },
   {
     featureType: "poi",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#00a1ff" }, { visibility: "simplified" }],
+    stylers: [{ visibility: "off" }],
   },
   {
-    featureType: "poi.park",
-    elementType: "geometry",
-    stylers: [{ color: "#1b1b1b" }],
+    featureType: "transit",
+    stylers: [{ visibility: "off" }],
   },
   {
-    featureType: "road",
-    elementType: "geometry",
-    stylers: [{ color: "#23272b" }],
+    featureType: "poi.school",
+    stylers: [{ visibility: "on" }],
   },
   {
-    featureType: "road",
-    elementType: "geometry.stroke",
-    stylers: [{ color: "#23272b" }],
+    featureType: "poi.school",
+    elementType: "labels.icon",
+    stylers: [{ color: "#00a1ff" }],
   },
   {
-    featureType: "road",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#9ca5b3" }],
+    featureType: "poi.school",
+    elementType: "labels.text",
+    stylers: [{ visibility: "off" }],
   },
   {
     featureType: "water",
     elementType: "geometry",
-    stylers: [{ color: "#285eaf" }],
+    stylers: [{ color: "#262e8c" }],
+  },
+  {
+    featureType: "road",
+    elementType: "labels.text.fill",
+    stylers: [{ visibility: "on" }, { color: "#888888" }],
   },
 ];
 
@@ -166,8 +176,9 @@ export const MapPanel: React.FC<MapPanelProps> = ({ selectedClass }) => {
       getCoordsForRoom(selectedClass.location).then((coords) => {
         if (!googleMap.current) return;
 
-        googleMap.current.panTo(coords);
-        googleMap.current.setZoom(17);
+        // offset latitude to make up for course description view at bottom
+        googleMap.current.panTo({ lat: coords.lat - 0.00015, lng: coords.lng });
+        googleMap.current.setZoom(19);
 
         if (marker.current) marker.current.setMap(null);
 
@@ -177,15 +188,18 @@ export const MapPanel: React.FC<MapPanelProps> = ({ selectedClass }) => {
           title: selectedClass.course.code,
           animation: window.google.maps.Animation.DROP,
           icon: {
-            path: window.google.maps.SymbolPath.CIRCLE,
-            scale: 10,
+            path: window.google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+            scale: 8,
             fillColor: "#00a1ff",
             fillOpacity: 1,
-            strokeWeight: 2,
+            strokeWeight: 3,
             strokeColor: "#ffffff",
           },
         });
       });
+    }
+    if (googleMap.current && !selectedClass && window.google) {
+      if (marker.current) marker.current.setMap(null);
     }
   }, [selectedClass]);
 

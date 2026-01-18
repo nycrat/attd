@@ -15,7 +15,6 @@ export const CourseDetailsDrawer: React.FC<CourseDetailsDrawerProps> = ({
   if (!selectedClass) return null;
 
   const subjectCode = selectedClass.course.code.toLowerCase().split(" ")[0];
-  const possibleExtensions = [".jpg", ".png", ".jpeg", ".JPG", ".PNG", ".JPEG"];
   const imageUrl = `/assets/${subjectCode}.jpg`;
 
   const formattedLocation = selectedClass.location
@@ -62,6 +61,9 @@ export const CourseDetailsDrawer: React.FC<CourseDetailsDrawerProps> = ({
                     target.src = currentSrc.replace(".png", ".jpeg");
                   } else if (currentSrc.endsWith(".jpeg")) {
                     target.src = currentSrc.replace(".jpeg", ".JPG");
+                  } else {
+                    // add fallback in case course has no image
+                    target.src = "/assets/fallback.png";
                   }
                 }}
               />

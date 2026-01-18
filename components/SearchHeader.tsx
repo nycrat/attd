@@ -7,7 +7,10 @@ interface SearchHeaderProps {
   isLoading: boolean;
 }
 
-export const SearchHeader: React.FC<SearchHeaderProps> = ({ onSearch, isLoading }) => {
+export const SearchHeader: React.FC<SearchHeaderProps> = ({ 
+  onSearch, 
+  isLoading, 
+}) => {
   const [value, setValue] = useState("");
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -56,4 +59,3 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({ onSearch, isLoading 
     </div>
   );
 };
-

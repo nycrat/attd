@@ -4,6 +4,7 @@ import React from "react";
 import { LiveClass } from "../lib/types";
 import { LiveClassCard } from "./LiveClassCard";
 import { stringToTime } from "@/lib/helpers";
+import { now } from "@/lib/constants";
 
 interface SidebarProps {
   liveClasses: LiveClass[];
@@ -16,8 +17,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
   selectedClassId,
   onSelectClass,
 }) => {
-  const now = new Date();
-
   const liveNow = liveClasses.filter((cls) => {
     const end = new Date(
       stringToTime(cls.startTime).getTime() + cls.durationMinutes * 60000,
@@ -28,6 +27,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const upcoming = liveClasses.filter(
     (cls) => stringToTime(cls.startTime) > now,
   );
+
+  const past = liveClasses.filter((cls) => {
+    const end = new Date(
+      stringToTime(cls.startTime).getTime() + cls.durationMinutes * 60000,
+    );
+    return end < now;
+  });
+
+  console.log(upcoming, past);
 
   return (
     <aside className="w-[30%] min-w-[360px] h-full flex flex-col border-r border-white/5 bg-background-dark/50 backdrop-blur-xl shrink-0">
@@ -72,6 +80,27 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
             <div className="space-y-3">
               {upcoming.map((item) => (
+                <LiveClassCard
+                  key={item.id}
+                  item={item}
+                  isSelected={item.id === selectedClassId}
+                  onSelect={onSelectClass}
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {past.length > 0 && (
+          <section>
+            <div className="px-4 mb-4 flex items-center gap-4">
+              <h2 className="shrink-0 text-[10px] font-black text-gray-600 uppercase tracking-[0.2em]">
+                Past
+              </h2>
+              <div className="h-[1px] w-full bg-white/5"></div>
+            </div>
+            <div className="space-y-3">
+              {past.map((item) => (
                 <LiveClassCard
                   key={item.id}
                   item={item}

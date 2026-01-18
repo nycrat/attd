@@ -12,7 +12,6 @@ export const CourseDetailsDrawer: React.FC<CourseDetailsDrawerProps> = ({
   selectedClass,
   onClose,
 }) => {
-
   if (!selectedClass) return null;
 
   const formattedLocation = selectedClass.location
@@ -25,7 +24,8 @@ export const CourseDetailsDrawer: React.FC<CourseDetailsDrawerProps> = ({
     High: "text-green-500",
   };
 
-  const colorClass = sneakScoreColors[selectedClass.sneakScore] || "text-gray-500";
+  const colorClass =
+    sneakScoreColors[selectedClass.sneakScore] || "text-gray-500";
 
   const mapLink = `https://learningspaces.ubc.ca/classrooms/${formattedLocation}/`;
 

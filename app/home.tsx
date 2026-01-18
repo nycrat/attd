@@ -8,6 +8,7 @@ import { MapPanel } from "../components/MapPanel";
 import { CourseDetailsDrawer } from "../components/CourseDetailsDrawer";
 import { Course, LiveClass } from "../lib/types";
 import { stringToTime } from "@/lib/helpers";
+import { now } from "@/lib/constants";
 
 export default function Home(props: { liveClasses: Promise<LiveClass[]> }) {
   const [liveClasses, setLiveClasses] = useState<LiveClass[]>(
@@ -20,7 +21,6 @@ export default function Home(props: { liveClasses: Promise<LiveClass[]> }) {
   // Update class progress based on real time
   useEffect(() => {
     const updateProgress = () => {
-      const now = new Date();
       setLiveClasses((prev) =>
         prev.map((cls) => {
           const elapsed =

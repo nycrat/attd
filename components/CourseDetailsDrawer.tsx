@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { LiveClass } from "../types";
+import { LiveClass } from "../lib/types";
 
 interface CourseDetailsDrawerProps {
   selectedClass: LiveClass | null;

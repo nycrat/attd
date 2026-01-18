@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { LiveClass } from "../types";
+import { LiveClass } from "../lib/types";
 
 interface MapPanelProps {
   selectedClass: LiveClass | null;

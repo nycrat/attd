@@ -18,7 +18,7 @@ export default function Home(props: { liveClasses: Promise<LiveClass[]> }) {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedClass, setSelectedClass] = useState<LiveClass | null>(null);
 
-  // Update class progress based on real time
+  // update class progress based on real time
   useEffect(() => {
     const updateProgress = () => {
       setLiveClasses((prev) =>
@@ -43,10 +43,31 @@ export default function Home(props: { liveClasses: Promise<LiveClass[]> }) {
   const handleSearch = useCallback(async (query: string) => {
     if (!query.trim()) return;
     setIsLoading(true);
-    setTimeout(() => {
-      console.log("Simulating search for:", query);
+
+    try {
+      const response = await fetch("/api/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ query }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: "Unknown error" }));
+        console.error("Search API error:", errorData);
+        throw new Error(errorData.error || errorData.details || "Search failed");
+      }
+
+      const data = await response.json();
+      if (data.results && data.results.length > 0) {
+        setLiveClasses(data.results);
+      }
+    } catch (error) {
+      console.error("Search error:", error);
+    } finally {
       setIsLoading(false);
-    }, 800);
+    }
   }, []);
 
   const handleSelectClass = useCallback((item: LiveClass) => {

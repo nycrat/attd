@@ -26,7 +26,7 @@ export const LiveClassCard: React.FC<LiveClassCardProps> = ({
   // load / update class info
   if (item.capacity >= 150) {
     item.sneakScore = "High";
-  } else if (item.capacity >= 80) {
+  } else if (item.capacity >= 50) {
     item.sneakScore = "Medium";
   } else {
     item.sneakScore = "Low";

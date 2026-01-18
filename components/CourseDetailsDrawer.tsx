@@ -14,6 +14,8 @@ export const CourseDetailsDrawer: React.FC<CourseDetailsDrawerProps> = ({
 }) => {
   if (!selectedClass) return null;
 
+  const imagePath = '/assets/'+selectedClass.course.code+'.jpg';
+
   const formattedLocation = selectedClass.location
     .toLowerCase()
     .replace(/\s+/g, "-");
@@ -45,7 +47,7 @@ export const CourseDetailsDrawer: React.FC<CourseDetailsDrawerProps> = ({
             {/* course info */}
             <div className="w-full md:w-40 aspect-video md:aspect-square rounded-xl overflow-hidden border border-white/5 shrink-0">
               <img
-                src={selectedClass.course.imageUrl}
+                src={imagePath}
                 className="w-full h-full object-cover grayscale-[0.2]"
                 alt={selectedClass.course.name}
               />

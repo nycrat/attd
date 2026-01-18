@@ -1,39 +1,22 @@
-import { LiveClass } from "@/app/types";
+import { Course, LiveClass } from "@/app/types";
+import { neon } from "@neondatabase/serverless";
 
 export async function GET() {
-	const res: LiveClass[] = [
-		{
-			id: "",
-			course: {
-				code: "CPSC 110",
-				name: "How to get the name?",
-				description: "idk gemini help us",
-				imageUrl: "",
-				level: "Beginner",
-			},
-			instructor: "Ronald Garcia",
-			location: "SWNG 102",
-			startTime: "13:30",
-			durationMinutes: 60,
-			capacity: 200,
-			sneakScore: "High",
-		},
-		{
-			id: "",
-			course: {
-				code: "CPSC 121",
-				name: "How to get the name?",
-				description: "idk gemini help us",
-				imageUrl: "",
-				level: "Beginner",
-			},
-			instructor: "Karina Mochetti",
-			location: "SWNG 201",
-			startTime: "13:30",
-			durationMinutes: 90,
-			capacity: 200,
-			sneakScore: "High",
-		},
-	];
-	return Response.json(res);
+  const sql = neon(`${process.env.DATABASE_URL}`);
+  const rows = await sql`SELECT * FROM live_classes`;
+
+  const res = (await Promise.all(
+    rows.map(async (row) => {
+      const [course] =
+        (await sql`SELECT * FROM courses WHERE code = ${row["courseCode"]}`) as Course[];
+
+      const newRow = (({ courseCode, ...rest }) => ({
+        ...rest,
+        course: course,
+      }))(row);
+      return newRow;
+    }),
+  )) as LiveClass[];
+
+  return Response.json(res);
 }

@@ -10,12 +10,14 @@ interface SidebarProps {
   liveClasses: LiveClass[];
   selectedClassId?: string;
   onSelectClass: (item: LiveClass) => void;
+  isLoading: boolean;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
   liveClasses,
   selectedClassId,
   onSelectClass,
+  isLoading,
 }) => {
   const { now } = useNow();
 
@@ -51,74 +53,88 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-8">
-        {liveNow.length > 0 && (
-          <section>
-            <h2 className="px-4 mb-4 text-xs font-black text-gray-500 uppercase tracking-[0.2em] flex items-center gap-2">
-              <span className="size-1.5 bg-primary rounded-full"></span>
-              Happening Now
-            </h2>
-            <div className="space-y-3">
-              {liveNow.map((item) => (
-                <LiveClassCard
-                  key={item.id}
-                  item={item}
-                  isSelected={item.id === selectedClassId}
-                  onSelect={onSelectClass}
-                />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {upcoming.length > 0 && (
-          <section>
-            <div className="px-4 mb-4 flex items-center gap-4">
-              <h2 className="shrink-0 text-xs font-black text-gray-600 uppercase tracking-[0.2em]">
-                Upcoming
-              </h2>
-              <div className="h-[1px] w-full bg-white/5"></div>
-            </div>
-            <div className="space-y-3">
-              {upcoming.map((item) => (
-                <LiveClassCard
-                  key={item.id}
-                  item={item}
-                  isSelected={item.id === selectedClassId}
-                  onSelect={onSelectClass}
-                />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {past.length > 0 && (
-          <section>
-            <div className="px-4 mb-4 flex items-center gap-4">
-              <h2 className="shrink-0 text-xs font-black text-gray-600 uppercase tracking-[0.2em]">
-                Past
-              </h2>
-              <div className="h-[1px] w-full bg-white/5"></div>
-            </div>
-            <div className="space-y-3">
-              {past.map((item) => (
-                <LiveClassCard
-                  key={item.id}
-                  item={item}
-                  isSelected={item.id === selectedClassId}
-                  onSelect={onSelectClass}
-                />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {liveClasses.length === 0 && (
+        {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20 opacity-30">
-            <span className="material-symbols-outlined text-4xl mb-2">
-              event_busy
+            <span
+              className={
+                "material-symbols-outlined text-gray-400 text-2xl animate-spin"
+              }
+            >
+              progress_activity
             </span>
-            <p className="text-sm font-bold uppercase">No classes today</p>
           </div>
+        ) : (
+          <>
+            {liveNow.length > 0 && (
+              <section>
+                <h2 className="px-4 mb-4 text-xs font-black text-gray-500 uppercase tracking-[0.2em] flex items-center gap-2">
+                  <span className="size-1.5 bg-primary rounded-full"></span>
+                  Happening Now
+                </h2>
+                <div className="space-y-3">
+                  {liveNow.map((item) => (
+                    <LiveClassCard
+                      key={item.id}
+                      item={item}
+                      isSelected={item.id === selectedClassId}
+                      onSelect={onSelectClass}
+                    />
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {upcoming.length > 0 && (
+              <section>
+                <div className="px-4 mb-4 flex items-center gap-4">
+                  <h2 className="shrink-0 text-xs font-black text-gray-600 uppercase tracking-[0.2em]">
+                    Upcoming
+                  </h2>
+                  <div className="h-[1px] w-full bg-white/5"></div>
+                </div>
+                <div className="space-y-3">
+                  {upcoming.map((item) => (
+                    <LiveClassCard
+                      key={item.id}
+                      item={item}
+                      isSelected={item.id === selectedClassId}
+                      onSelect={onSelectClass}
+                    />
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {past.length > 0 && (
+              <section>
+                <div className="px-4 mb-4 flex items-center gap-4">
+                  <h2 className="shrink-0 text-xs font-black text-gray-600 uppercase tracking-[0.2em]">
+                    Past
+                  </h2>
+                  <div className="h-[1px] w-full bg-white/5"></div>
+                </div>
+                <div className="space-y-3">
+                  {past.map((item) => (
+                    <LiveClassCard
+                      key={item.id}
+                      item={item}
+                      isSelected={item.id === selectedClassId}
+                      onSelect={onSelectClass}
+                    />
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {liveClasses.length === 0 && (
+              <div className="flex flex-col items-center justify-center py-20 opacity-30">
+                <span className="material-symbols-outlined text-4xl mb-2">
+                  event_busy
+                </span>
+                <p className="text-sm font-bold uppercase">No classes today</p>
+              </div>
+            )}
+          </>
         )}
       </div>
     </aside>

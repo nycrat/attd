@@ -19,6 +19,7 @@ export default function Home() {
   const { now } = useNow();
 
   useEffect(() => {
+    setIsLoading(true);
     (async () => {
       if (!now) {
         return;
@@ -27,6 +28,7 @@ export default function Home() {
       const classes = await res.json();
       setLiveClasses(classes);
       setAllLiveClasses(classes); // store original unfiltered list
+      setIsLoading(false);
     })();
   }, [now]);
 
@@ -90,12 +92,13 @@ export default function Home() {
           liveClasses={liveClasses}
           selectedClassId={selectedClass?.id}
           onSelectClass={handleSelectClass}
+          isLoading={isLoading}
         />
 
         <main className="flex-1 relative sm:flex flex-col hidden">
           {/* top Fixed Search Area */}
           <div className="w-full py-6 flex flex-col items-center bg-gradient-to-b from-background-dark to-transparent z-40">
-            <SearchHeader onSearch={handleSearch} isLoading={isLoading} />
+            <SearchHeader onSearch={handleSearch} />
           </div>
 
           <div className="flex-1 flex flex-col overflow-hidden">

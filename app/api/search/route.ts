@@ -380,7 +380,7 @@ export async function POST(request: NextRequest) {
     console.log("Filters from AI:", filters);
 
     try {
-      const results = await buildAndExecuteQuery(filters, new Date(now));
+      const results = await buildAndExecuteQuery(filters, new Date(now + "Z"));
       return NextResponse.json({ results } as { results: LiveClass[] });
     } catch (queryError) {
       console.error("Query execution error:", queryError);

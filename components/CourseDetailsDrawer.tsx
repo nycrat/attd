@@ -39,7 +39,7 @@ export const CourseDetailsDrawer: React.FC<CourseDetailsDrawerProps> = ({
           {/* close button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 size-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all z-10"
+            className="absolute top-5 right-5 size-8 flex items-center justify-center rounded-full bg-black/70 sm:bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all z-10"
           >
             <span className="material-symbols-outlined text-lg">close</span>
           </button>

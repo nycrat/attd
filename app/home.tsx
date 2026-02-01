@@ -15,7 +15,9 @@ export default function Home() {
   const [allLiveClasses, setAllLiveClasses] = useState<LiveClass[]>([]);
   const [searchResults, setSearchResults] = useState<Course[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMapOpen, setIsMapOpen] = useState(false);
   const [selectedClass, setSelectedClass] = useState<LiveClass | null>(null);
+
   const { now } = useNow();
 
   useEffect(() => {
@@ -87,14 +89,18 @@ export default function Home() {
     <div className="flex flex-col h-dvh w-full bg-background-dark text-white font-display overflow-hidden">
       <Header />
 
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar
-          liveClasses={liveClasses}
-          selectedClassId={selectedClass?.id}
-          onSelectClass={handleSelectClass}
-          isLoading={isLoading}
-        />
+      <div className="flex flex-1 overflow-hidden ">
+        {/* Sidebar - hidden on mobile */}
+        <div className="sm:flex hidden max-w-[500px] border-r border-white/5">
+          <Sidebar
+            liveClasses={liveClasses}
+            selectedClassId={selectedClass?.id}
+            onSelectClass={handleSelectClass}
+            isLoading={isLoading}
+          />
+        </div>
 
+        {/* Desktop View */}
         <main className="flex-1 relative sm:flex flex-col hidden">
           {/* top Fixed Search Area */}
           <div className="w-full py-6 flex flex-col items-center bg-gradient-to-b from-background-dark to-transparent z-40">
@@ -120,7 +126,73 @@ export default function Home() {
             onClose={() => setSelectedClass(null)}
           />
         </main>
+
+        {/* Mobile View */}
+        <main className="flex-1 sm:hidden flex flex-col">
+          {/* Mobile Search Header */}
+          <div className="w-full p-4 pr-6 bg-gradient-to-b from-background-dark to-transparent z-40">
+            <SearchHeader onSearch={handleSearch} />
+          </div>
+
+          {/* Mobile Sidebar Content */}
+          <div className="flex-1 overflow-hidden max-w-screen px-4">
+            <Sidebar
+              liveClasses={liveClasses}
+              selectedClassId={selectedClass?.id}
+              onSelectClass={handleSelectClass}
+              isLoading={isLoading}
+            />
+          </div>
+
+          {/* Mobile Map Button */}
+          <button
+            onClick={() => setIsMapOpen(true)}
+            className="fixed bottom-6 right-6 z-50 bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-full shadow-lg transition-all duration-200 flex items-center justify-center"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+            </svg>
+          </button>
+
+          {/* Course Details Bottom Drawer */}
+          <CourseDetailsDrawer
+            selectedClass={selectedClass}
+            onClose={() => setSelectedClass(null)}
+          />
+        </main>
       </div>
+
+      {/* Mobile Map Modal */}
+      {isMapOpen && (
+        <div className="fixed inset-0 z-50 sm:hidden bg-background-dark">
+          <div className="flex flex-col h-full">
+            {/* Mobile Map Header */}
+            <div className="flex items-center justify-between p-4 border-b border-white/10">
+              <h2 className="text-lg font-semibold">Map View</h2>
+              <button
+                onClick={() => setIsMapOpen(false)}
+                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            {/* Mobile Map Content */}
+            <div className="flex-1">
+              <MapPanel
+                selectedClass={selectedClass}
+                liveClasses={allLiveClasses}
+                onBuildingClick={(buildingCode, filteredClasses) => {
+                  handleBuildingClick(buildingCode, filteredClasses);
+                  setIsMapOpen(false);
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

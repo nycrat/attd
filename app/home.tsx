@@ -91,7 +91,7 @@ export default function Home() {
 
       <div className="flex flex-1 overflow-hidden ">
         {/* Sidebar - hidden on mobile */}
-        <div className="sm:flex hidden max-w-[500px] border-r border-white/5">
+        <div className="sm:flex hidden w-[500px] border-r border-white/5 p-4">
           <Sidebar
             liveClasses={liveClasses}
             selectedClassId={selectedClass?.id}
@@ -149,8 +149,18 @@ export default function Home() {
             onClick={() => setIsMapOpen(true)}
             className="fixed bottom-6 right-6 z-50 bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-full shadow-lg transition-all duration-200 flex items-center justify-center"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+              />
             </svg>
           </button>
 
@@ -173,12 +183,22 @@ export default function Home() {
                 onClick={() => setIsMapOpen(false)}
                 className="p-2 hover:bg-white/10 rounded-lg transition-colors"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
-            
+
             {/* Mobile Map Content */}
             <div className="flex-1">
               <MapPanel

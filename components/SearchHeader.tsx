@@ -17,11 +17,11 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({ onSearch }) => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 640);
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -50,14 +50,20 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({ onSearch }) => {
         >
           <div className="flex items-center gap-2 sm:gap-4 px-2 sm:px-4 py-2">
             <span
-              className={"material-symbols-outlined text-gray-400 text-xl sm:text-2xl"}
+              className={
+                "material-symbols-outlined text-gray-400 text-xl sm:text-2xl"
+              }
             >
               auto_awesome
             </span>
             <input
               className="bg-transparent border-none focus:ring-0 text-sm sm:text-base font-medium text-white w-full placeholder-gray-600 font-display focus:outline-none h-6 leading-6 my-1"
               type="text"
-              placeholder={isMobile ? "Search classes..." : "Ask about classes using natural language..."}
+              placeholder={
+                isMobile
+                  ? "Search classes..."
+                  : "Ask about classes using natural language..."
+              }
               value={value}
               onChange={(e) => setValue(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -78,7 +84,9 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({ onSearch }) => {
         onClick={handleButtonClick}
         className="text-gray-500 hover:text-white transition-colors p-1"
       >
-        <span className="material-symbols-outlined text-xl sm:text-2xl">settings</span>
+        <span className="material-symbols-outlined text-xl sm:text-2xl">
+          settings
+        </span>
       </button>
 
       <input

@@ -41,7 +41,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <aside className="w-full h-full flex flex-col bg-background-dark/50 backdrop-blur-xl shrink-0">
-      <div className="p-8 pb-2 hidden sm:block">
+      <div className="p-2 pb-4 hidden sm:block">
         <div className="flex items-center justify-between mb-1">
           <h1 className="text-white text-3xl font-bold tracking-tight">
             Today's Lectures to Attend

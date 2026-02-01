@@ -40,8 +40,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   });
 
   return (
-    <aside className="sm:w-[30%] w-full min-w-[360px] h-full flex flex-col border-r border-white/5 bg-background-dark/50 backdrop-blur-xl shrink-0">
-      <div className="p-8 pb-2 hidden sm:block">
+    <aside className="w-full h-full flex flex-col bg-background-dark/50 backdrop-blur-xl shrink-0">
+      <div className="p-2 pb-4 hidden sm:block">
         <div className="flex items-center justify-between mb-1">
           <h1 className="text-white text-3xl font-bold tracking-tight">
             Today's Lectures to Attend
@@ -52,7 +52,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </p>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-8">
+      <div className="flex-1 overflow-y-auto space-y-8">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20 opacity-30">
             <span

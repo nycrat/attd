@@ -47,7 +47,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
             <input
               type="datetime-local"
               onChange={(e) => setDateTime(new Date(e.target.value))}
-              className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full appearance-none bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               autoFocus
             />
 

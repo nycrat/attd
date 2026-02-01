@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, KeyboardEvent, useRef } from "react";
+import React, { useState, useEffect, KeyboardEvent } from "react";
 import { useNow } from "./NowProvider";
+import { DateTimePicker } from "./DateTimePicker";
 
 interface SearchHeaderProps {
   onSearch: (query: string) => void;
@@ -11,7 +12,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({ onSearch }) => {
   const [value, setValue] = useState("");
   const [isMobile, setIsMobile] = useState(false);
   const { setNow } = useNow();
-  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -30,12 +30,8 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({ onSearch }) => {
     }
   };
 
-  const handleButtonClick = () => {
-    inputRef.current?.showPicker?.();
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNow(new Date(e.target.value));
+  const handleDateTimeChange = (date: Date) => {
+    setNow(date);
   };
 
   return (
@@ -80,21 +76,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({ onSearch }) => {
         </div>
       </div>
 
-      <button
-        onClick={handleButtonClick}
-        className="text-gray-500 hover:text-white transition-colors p-1"
-      >
-        <span className="material-symbols-outlined text-xl sm:text-2xl">
-          settings
-        </span>
-      </button>
-
-      <input
-        type="datetime-local"
-        ref={inputRef}
-        onChange={handleChange}
-        className="absolute right-0 top-22 invisible"
-      />
+      <DateTimePicker onDateTimeChange={handleDateTimeChange} />
     </div>
   );
 };

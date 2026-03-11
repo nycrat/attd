@@ -95,7 +95,7 @@ export async function GET(req: Request) {
 
     if (minutesAvailable >= 30) {
       const untilDate = new Date(now);
-      untilDate.setHours(
+      untilDate.setUTCHours(
         Math.floor(availableUntilMinutes / 60),
         availableUntilMinutes % 60,
         0,
@@ -107,14 +107,17 @@ export async function GET(req: Request) {
         buildingCode: roomInfo.buildingCode,
         roomNumber: roomInfo.roomNumber,
         capacity: roomInfo.capacity,
-        availableFrom: now.toISOString(),
-        availableUntil: untilDate.toISOString(),
+        // returns date without Z at end, client interprets as their own timezonej
+        availableFrom: now.toISOString().slice(0, -1),
+        availableUntil: untilDate.toISOString().slice(0, -1),
         minutesAvailable,
       });
     }
   }
 
   emptyRooms.sort((a, b) => b.minutesAvailable - a.minutesAvailable);
+
+  console.log(emptyRooms)
 
   return Response.json(emptyRooms);
 }

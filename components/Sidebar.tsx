@@ -154,6 +154,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </p>
       </div>
 
+      {selectedBuilding && viewMode === "liveClasses" && (
+        <div className="px-4 py-2 mx-4 mb-2 bg-[#ffc200]/20 border border-[#ffc200]/30 rounded-lg flex items-center justify-between">
+          <span className="text-sm text-[#ffc200]">
+            Filtering: <strong>{selectedBuilding}</strong>
+          </span>
+          <button
+            onClick={onClearBuildingFilter}
+            className="text-gray-400 hover:text-white transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      )}
+
       <div className="flex-1 overflow-y-auto space-y-8">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20 opacity-30">

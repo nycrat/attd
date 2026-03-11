@@ -118,6 +118,7 @@ export default function Home() {
         setSelectedBuilding(buildingCode.toUpperCase());
       } else {
         setLiveClasses(filteredClasses);
+        setSelectedBuilding(buildingCode.toUpperCase());
       }
       setSelectedClass(null);
     },
@@ -135,7 +136,8 @@ export default function Home() {
   const handleClearBuildingFilter = useCallback(() => {
     setSelectedBuilding(null);
     setFilteredEmptyRooms([]);
-  }, []);
+    setLiveClasses(allLiveClasses);
+  }, [allLiveClasses]);
 
   return (
     <div className="flex flex-col h-dvh w-full bg-background-dark text-white font-display overflow-hidden">

@@ -11,6 +11,16 @@ export interface LiveClass {
   weekday: number;
 }
 
+export interface EmptyRoom {
+  location: string;
+  buildingCode: string;
+  roomNumber: string;
+  capacity: number;
+  availableFrom: string;
+  availableUntil: string;
+  minutesAvailable: number;
+}
+
 export interface Course {
   code: string;
   name: string;

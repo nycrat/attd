@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { LiveClass } from "../lib/types";
+import { LiveClass, EmptyRoom } from "../lib/types";
 
 interface MapPanelProps {
   selectedClass: LiveClass | null;
@@ -10,6 +10,9 @@ interface MapPanelProps {
     buildingCode: string,
     filteredClasses: LiveClass[],
   ) => void;
+  viewMode?: "liveClasses" | "emptyRooms";
+  emptyRooms?: EmptyRoom[];
+  selectedBuilding?: string | null;
 }
 
 // Global flag to track if script is loading/loaded
@@ -77,6 +80,9 @@ export const MapPanel: React.FC<MapPanelProps> = ({
   selectedClass,
   liveClasses = [],
   onBuildingClick,
+  viewMode = "liveClasses",
+  emptyRooms = [],
+  selectedBuilding,
 }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const googleMap = useRef<any>(null);
@@ -234,25 +240,44 @@ export const MapPanel: React.FC<MapPanelProps> = ({
         return classBuildingCode === buildingCodeUpper;
       });
 
-      const hasClasses = buildingClasses.length > 0;
-      const fillColor = hasClasses ? "#00a1ff" : "#666666"; // blue if has classes, grey if not
+      const buildingEmptyRooms = emptyRooms.filter((room) => {
+        return room.buildingCode === buildingCodeUpper;
+      });
+
+      let fillColor = "#666666";
+      let hasContent = false;
+      let tooltipText = building.code.toUpperCase();
+      const isSelected = selectedBuilding?.toUpperCase() === buildingCodeUpper;
+
+      if (viewMode === "liveClasses") {
+        hasContent = buildingClasses.length > 0;
+        fillColor = isSelected ? "#FFC200" : hasContent ? "#00a1ff" : "#666666";
+        tooltipText = hasContent
+          ? `${building.code.toUpperCase()} (${buildingClasses.length} classes)`
+          : building.code.toUpperCase();
+      } else {
+        hasContent = buildingEmptyRooms.length > 0;
+        fillColor = isSelected ? "#FFC200" : hasContent ? "#a855f7" : "#666666";
+        tooltipText = hasContent
+          ? `${building.code.toUpperCase()} (${buildingEmptyRooms.length} rooms)`
+          : building.code.toUpperCase();
+      }
 
       const buildingMarker = new window.google.maps.Marker({
         position: { lat: building.lat, lng: building.lng },
         map: googleMap.current,
-        title: building.code.toUpperCase(),
+        title: tooltipText,
         icon: {
           path: window.google.maps.SymbolPath.CIRCLE,
-          scale: 6,
+          scale: isSelected ? 10 : 6,
           fillColor: fillColor,
-          fillOpacity: 0.8,
-          strokeWeight: 2,
-          strokeColor: "#ffffff",
+          fillOpacity: isSelected ? 1 : hasContent ? 0.8 : 0.3,
+          strokeWeight: isSelected ? 3 : hasContent ? 2 : 1,
+          strokeColor: isSelected ? "#000000" : hasContent ? "#ffffff" : "#666666",
         },
       });
 
       buildingMarker.addListener("click", () => {
-        // filter classes by building code
         if (onBuildingClick) {
           onBuildingClick(building.code, buildingClasses);
         }
@@ -260,7 +285,15 @@ export const MapPanel: React.FC<MapPanelProps> = ({
 
       buildingMarkers.current.push(buildingMarker);
     });
-  }, [buildingCoords, liveClasses, onBuildingClick, clearAllMarkers]);
+  }, [
+    buildingCoords,
+    liveClasses,
+    emptyRooms,
+    onBuildingClick,
+    clearAllMarkers,
+    viewMode,
+    selectedBuilding,
+  ]);
 
   useEffect(() => {
     if (!googleMap.current || !window.google || buildingCoords.length === 0)
@@ -283,7 +316,7 @@ export const MapPanel: React.FC<MapPanelProps> = ({
         window.google?.maps?.event?.clearListeners(googleMap.current, "click");
       }
     };
-  }, [buildingCoords, selectedClass, showBuildingMarkers]);
+  }, [buildingCoords, selectedClass, showBuildingMarkers, viewMode]);
 
   // handle selectedClass changes
   useEffect(() => {

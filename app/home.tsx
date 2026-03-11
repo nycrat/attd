@@ -6,9 +6,10 @@ import { SearchHeader } from "../components/SearchHeader";
 import { Header } from "../components/Header";
 import { MapPanel } from "../components/MapPanel";
 import { CourseDetailsDrawer } from "../components/CourseDetailsDrawer";
-import { Course, LiveClass } from "../lib/types";
+import { Course, LiveClass, EmptyRoom } from "../lib/types";
 import { useNow } from "@/components/NowProvider";
 import { formatDatetime } from "@/lib/helpers";
+import { ViewToggle } from "@/components/ViewToggle";
 
 export default function Home() {
   const [liveClasses, setLiveClasses] = useState<LiveClass[]>([]);
@@ -17,6 +18,12 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [isMapOpen, setIsMapOpen] = useState(false);
   const [selectedClass, setSelectedClass] = useState<LiveClass | null>(null);
+  const [viewMode, setViewMode] = useState<"liveClasses" | "emptyRooms">(
+    "liveClasses",
+  );
+  const [emptyRooms, setEmptyRooms] = useState<EmptyRoom[]>([]);
+  const [selectedBuilding, setSelectedBuilding] = useState<string | null>(null);
+  const [filteredEmptyRooms, setFilteredEmptyRooms] = useState<EmptyRoom[]>([]);
 
   const { now } = useNow();
 
@@ -33,6 +40,29 @@ export default function Home() {
       setIsLoading(false);
     })();
   }, [now]);
+
+  useEffect(() => {
+    if (viewMode !== "emptyRooms" || !now) return;
+
+    setIsLoading(true);
+    (async () => {
+      const res = await fetch(`/api/rooms/empty?now=${formatDatetime(now)}`);
+      const rooms = await res.json();
+      setEmptyRooms(rooms);
+      setIsLoading(false);
+    })();
+  }, [viewMode, now]);
+
+  const handleViewModeChange = useCallback(
+    (mode: "liveClasses" | "emptyRooms") => {
+      setViewMode(mode);
+      setSelectedClass(null);
+      setSelectedBuilding(null);
+      setFilteredEmptyRooms([]);
+      setSearchResults([]);
+    },
+    [],
+  );
 
   const handleSearch = useCallback(
     async (query: string) => {
@@ -79,11 +109,35 @@ export default function Home() {
 
   const handleBuildingClick = useCallback(
     (buildingCode: string, filteredClasses: LiveClass[]) => {
-      setLiveClasses(filteredClasses);
+      if (viewMode === "emptyRooms") {
+        const roomsInBuilding = emptyRooms.filter(
+          (room) =>
+            room.buildingCode.toUpperCase() === buildingCode.toUpperCase(),
+        );
+        setFilteredEmptyRooms(roomsInBuilding);
+        setSelectedBuilding(buildingCode.toUpperCase());
+      } else {
+        setLiveClasses(filteredClasses);
+        setSelectedBuilding(buildingCode.toUpperCase());
+      }
       setSelectedClass(null);
     },
-    [],
+    [viewMode, emptyRooms],
   );
+
+  const handleSelectEmptyRoom = useCallback((room: EmptyRoom) => {
+    const roomsInBuilding = emptyRooms.filter(
+      (r) => r.buildingCode.toUpperCase() === room.buildingCode.toUpperCase()
+    );
+    setSelectedBuilding(room.buildingCode);
+    setFilteredEmptyRooms(roomsInBuilding);
+  }, [emptyRooms]);
+
+  const handleClearBuildingFilter = useCallback(() => {
+    setSelectedBuilding(null);
+    setFilteredEmptyRooms([]);
+    setLiveClasses(allLiveClasses);
+  }, [allLiveClasses]);
 
   return (
     <div className="flex flex-col h-dvh w-full bg-background-dark text-white font-display overflow-hidden">
@@ -97,6 +151,15 @@ export default function Home() {
             selectedClassId={selectedClass?.id}
             onSelectClass={handleSelectClass}
             isLoading={isLoading}
+            viewMode={viewMode}
+            emptyRooms={
+              filteredEmptyRooms.length > 0 || selectedBuilding
+                ? filteredEmptyRooms
+                : emptyRooms
+            }
+            onSelectEmptyRoom={handleSelectEmptyRoom}
+            selectedBuilding={selectedBuilding}
+            onClearBuildingFilter={handleClearBuildingFilter}
           />
         </div>
 
@@ -105,6 +168,9 @@ export default function Home() {
           {/* top Fixed Search Area */}
           <div className="w-full py-6 flex flex-col items-center bg-gradient-to-b from-background-dark to-transparent z-40">
             <SearchHeader onSearch={handleSearch} />
+            <div className="mt-4">
+              <ViewToggle viewMode={viewMode} onToggle={handleViewModeChange} />
+            </div>
           </div>
 
           <div className="flex-1 flex flex-col overflow-hidden">
@@ -116,6 +182,9 @@ export default function Home() {
                 selectedClass={selectedClass}
                 liveClasses={allLiveClasses}
                 onBuildingClick={handleBuildingClick}
+                viewMode={viewMode}
+                emptyRooms={emptyRooms}
+                selectedBuilding={selectedBuilding}
               />
             </div>
           </div>
@@ -132,6 +201,9 @@ export default function Home() {
           {/* Mobile Search Header */}
           <div className="w-full p-4 pr-6 bg-gradient-to-b from-background-dark to-transparent z-40">
             <SearchHeader onSearch={handleSearch} />
+            <div className="mt-4">
+              <ViewToggle viewMode={viewMode} onToggle={handleViewModeChange} />
+            </div>
           </div>
 
           {/* Mobile Sidebar Content */}
@@ -141,6 +213,15 @@ export default function Home() {
               selectedClassId={selectedClass?.id}
               onSelectClass={handleSelectClass}
               isLoading={isLoading}
+              viewMode={viewMode}
+              emptyRooms={
+                filteredEmptyRooms.length > 0 || selectedBuilding
+                  ? filteredEmptyRooms
+                  : emptyRooms
+              }
+              onSelectEmptyRoom={handleSelectEmptyRoom}
+              selectedBuilding={selectedBuilding}
+              onClearBuildingFilter={handleClearBuildingFilter}
             />
           </div>
 
@@ -208,6 +289,9 @@ export default function Home() {
                   handleBuildingClick(buildingCode, filteredClasses);
                   setIsMapOpen(false);
                 }}
+                viewMode={viewMode}
+                emptyRooms={emptyRooms}
+                selectedBuilding={selectedBuilding}
               />
             </div>
           </div>

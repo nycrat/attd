@@ -28,10 +28,10 @@ export async function GET(req: Request) {
     return Response.json([]);
   }
 
-  const now = new Date(nowParam);
-  const weekday = now.getDay();
-  const currentHour = now.getHours();
-  const currentMinute = now.getMinutes();
+  const now = new Date(nowParam + "Z");
+  const weekday = now.getUTCDay();
+  const currentHour = now.getUTCHours();
+  const currentMinute = now.getUTCMinutes();
   const currentTimeMinutes = currentHour * 60 + currentMinute;
 
   const sql = neon(`${process.env.DATABASE_URL}`);
@@ -116,5 +116,5 @@ export async function GET(req: Request) {
 
   emptyRooms.sort((a, b) => b.minutesAvailable - a.minutesAvailable);
 
-  return Response.json(emptyRooms.slice(0, 100));
+  return Response.json(emptyRooms);
 }

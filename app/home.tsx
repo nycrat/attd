@@ -125,9 +125,12 @@ export default function Home() {
   );
 
   const handleSelectEmptyRoom = useCallback((room: EmptyRoom) => {
+    const roomsInBuilding = emptyRooms.filter(
+      (r) => r.buildingCode.toUpperCase() === room.buildingCode.toUpperCase()
+    );
     setSelectedBuilding(room.buildingCode);
-    setFilteredEmptyRooms([room]);
-  }, []);
+    setFilteredEmptyRooms(roomsInBuilding);
+  }, [emptyRooms]);
 
   const handleClearBuildingFilter = useCallback(() => {
     setSelectedBuilding(null);

@@ -98,7 +98,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           ) : emptyRooms.length > 0 ? (
             <section>
               <h2 className="px-4 mb-4 text-xs font-black text-gray-500 uppercase tracking-[0.2em] flex items-center gap-2">
-                <span className="size-1.5 bg-green-500 rounded-full"></span>
+                <span className="size-1.5 bg-purple-500 rounded-full"></span>
                 Available Now
               </h2>
               <div className="space-y-3">

@@ -257,7 +257,7 @@ export const MapPanel: React.FC<MapPanelProps> = ({
           : building.code.toUpperCase();
       } else {
         hasContent = buildingEmptyRooms.length > 0;
-        fillColor = isSelected ? "#FFC200" : hasContent ? "#22c55e" : "#666666";
+        fillColor = isSelected ? "#FFC200" : hasContent ? "#a855f7" : "#666666";
         tooltipText = hasContent
           ? `${building.code.toUpperCase()} (${buildingEmptyRooms.length} rooms)`
           : building.code.toUpperCase();
@@ -271,9 +271,9 @@ export const MapPanel: React.FC<MapPanelProps> = ({
           path: window.google.maps.SymbolPath.CIRCLE,
           scale: isSelected ? 10 : 6,
           fillColor: fillColor,
-          fillOpacity: isSelected ? 1 : 0.8,
-          strokeWeight: isSelected ? 3 : 2,
-          strokeColor: isSelected ? "#000000" : "#ffffff",
+          fillOpacity: isSelected ? 1 : hasContent ? 0.8 : 0.3,
+          strokeWeight: isSelected ? 3 : hasContent ? 2 : 1,
+          strokeColor: isSelected ? "#000000" : hasContent ? "#ffffff" : "#666666",
         },
       });
 
